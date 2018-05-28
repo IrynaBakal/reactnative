@@ -49,6 +49,7 @@ export const colors = {
   noteText: '#777777',
   actionBar: '#F3F3F3',
   selectedRowColor: 'rgba(21, 171, 255, 0.2)',
+  white: '#fff'
 };
 
 export const styles = StyleSheet.create({
@@ -56,7 +57,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: colors.whiteMaterial,
+    backgroundColor: colors.white,
   },
   instructions: {
     textAlign: 'center',

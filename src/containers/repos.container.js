@@ -67,6 +67,14 @@ class ReposContainer extends Component {
     }
     if (this.state.repos && this.state.repos.length) {
       content = <TopRepos reposData={this.state.repos}/>;
+    } else if (this.state.repos) {
+      content = (<View style={{ alignItems: 'center' }}>
+                  <Text style={styles.headline}>Sorry, no results were found!</Text>
+                  <Image
+                    source={require('../assets/no_results.png')}
+                    resizeMode={'contain'}
+                  />
+                </View>);
     }
     //console.log(repos);
 
