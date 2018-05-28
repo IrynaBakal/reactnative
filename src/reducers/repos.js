@@ -1,7 +1,7 @@
 export const initialState = {
   repos: [],
   isLoading: false,
-  hasErrored: false
+  hasErrored: false,
 };
 
 export function reposHasErrored(state = initialState.hasErrored, action) {

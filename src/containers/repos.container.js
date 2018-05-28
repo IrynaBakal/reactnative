@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Platform,
-  Text,
-  View,
-  TextInput,
   Image,
+  Text,
+  TextInput,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { styles } from '../styles/index';
 import TopRepos from '../components/top-repos';
@@ -21,20 +20,23 @@ class ReposContainer extends Component {
 
   componentDidMount() {
     this.props.dispatch(fetchRepos());
-    //this.props.fetchData('https://api.github.com/search/repositories?q=stars:>=10000+language:js&sort=stars&order=desc');
   }
 
   render() {
-    let {repos} = this.props;
-    console.log('PROPS',this.props);
-    if (this.props.hasErrored) {
-      return <Text>Sorry! There was an error loading the repositories info</Text>;
-    }
-    if (this.props.isLoading) {
-      return <Text>Loading…</Text>;
-    }
+    let { repos, isLoading, hasErrored } = this.props;
+    console.log('PROPS', repos, isLoading, hasErrored);
+    let content = null;
 
-    console.log(repos);
+    if (isLoading) {
+      content = <Text style={styles.headline}>Loading…</Text>;
+    }
+    if (hasErrored) {
+      content = <Text style={styles.headline}>Sorry! There was an error loading the repositories info</Text>;
+    }
+    if (repos && repos.length) {
+      content = <TopRepos reposData={repos}/>;
+    }
+    //console.log(repos);
 
     {/* onChangeText={(searchInput) => this.setState({ searchInput })} */}
     return (
@@ -61,6 +63,7 @@ class ReposContainer extends Component {
         </View>
         {/*<Text>{Platform.OS === 'ios' ? 'iosios' : 'android'}</Text>*/}
         {/*<TopRepos searchQuery={this.state.searchInput} reposData={this.state.repos}/>*/}
+        { content }
       </View>
     );
   }

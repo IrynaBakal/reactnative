@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: colors.whiteMaterial,
   },
   instructions: {
     textAlign: 'center',
@@ -82,6 +82,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   cancelIcon: {
-    resizeMode: 'center'
+    width: 12,
+    height: 12,
+  },
+  headline: {
+    fontSize: 20,
+    fontWeight: '500',
+    margin: 15,
+    textAlign: 'center',
   }
 });

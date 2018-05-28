@@ -3,7 +3,7 @@ import { repos, reposHasErrored, reposIsLoading } from './repos';
 
 export default combineReducers({
   repos,
-  isLoading: reposIsLoading,
-  hasErrored: reposHasErrored,
+  reposIsLoading,
+  reposHasErrored,
 });
 
