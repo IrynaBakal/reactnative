@@ -12,10 +12,40 @@ import { connect } from 'react-redux';
 import { fetchRepos } from '../actions/repos';
 
 class ReposContainer extends Component {
+  state = { searchInput: '' };
+
+  componentWillReceiveProps(nextProps){
+    console.log('nextProps',nextProps);
+    console.log('currProps',this.props);
+  // ||
+  //   nextProps.isLoading !== this.props.isLoading ||
+  //   nextProps.hasErrored !== this.props.hasErrored
+    if (nextProps.repos !== this.props.repos) {
+      console.log('nextProps',nextProps);
+       this.setState({ repos: nextProps.repos })
+    }
+  }
 
   cancelSearchHandler = (e) => {
-    //this.setState({ searchInput: '' });
-    console.log('cancel', e);
+    this.setState({ searchInput: '' });
+    console.log('cancel', e, this.state.searchInput);
+    this.updateTopRepos('');
+  };
+
+  changeSearchHandler = (query) => {
+    console.log('query', query);
+    this.setState({ searchInput: query });
+    this.updateTopRepos(query);
+  };
+
+  updateTopRepos = (query) => {
+    let repos = [...this.props.repos];
+    let searchedRepos = query.length ? repos.filter(item => {
+      return item.name.toLowerCase().includes(query);
+    }) : repos;
+    console.log(searchedRepos);
+    this.setState({repos: searchedRepos});
+
   };
 
   componentDidMount() {
@@ -23,8 +53,10 @@ class ReposContainer extends Component {
   }
 
   render() {
-    let { repos, isLoading, hasErrored } = this.props;
-    console.log('PROPS', repos, isLoading, hasErrored);
+    console.log('state after constructor in render ', this.state);
+
+    let { isLoading, hasErrored } = this.props;
+    console.log('PROPS', isLoading, hasErrored);
     let content = null;
 
     if (isLoading) {
@@ -33,12 +65,11 @@ class ReposContainer extends Component {
     if (hasErrored) {
       content = <Text style={styles.headline}>Sorry! There was an error loading the repositories info</Text>;
     }
-    if (repos && repos.length) {
-      content = <TopRepos reposData={repos}/>;
+    if (this.state.repos && this.state.repos.length) {
+      content = <TopRepos reposData={this.state.repos}/>;
     }
     //console.log(repos);
 
-    {/* onChangeText={(searchInput) => this.setState({ searchInput })} */}
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
@@ -47,11 +78,13 @@ class ReposContainer extends Component {
             source={require('../assets/search.png')}
             style={styles.searchIcon}
           />
+          {console.log(this.state.searchInput,'RENDER')}
           <TextInput
             placeholder={'search'}
             style={styles.searchField}
-            value={this.props.searchInput}
+            value={this.state.searchInput}
             underlineColorAndroid="transparent"
+            onChangeText={(searchInput) => this.changeSearchHandler(searchInput.toLowerCase())}
           />
           <TouchableWithoutFeedback onPress={this.cancelSearchHandler}>
             <Image
@@ -70,7 +103,7 @@ class ReposContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  console.log('mapStateToProps', state);
   return {
     repos: state.repos,
     isLoading: state.reposIsLoading,
