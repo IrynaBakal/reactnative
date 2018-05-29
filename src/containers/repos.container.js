@@ -17,12 +17,14 @@ class ReposContainer extends Component {
   componentWillReceiveProps(nextProps){
     console.log('nextProps',nextProps);
     console.log('currProps',this.props);
-  // ||
-  //   nextProps.isLoading !== this.props.isLoading ||
-  //   nextProps.hasErrored !== this.props.hasErrored
-    if (nextProps.repos !== this.props.repos) {
+
+    if (nextProps.repos !== this.props.repos ||
+        nextProps.isLoading !== this.props.isLoading) {
       console.log('nextProps',nextProps);
-       this.setState({ repos: nextProps.repos })
+       this.setState({
+         repos: nextProps.repos,
+         isLoading: nextProps.isLoading,
+       })
     }
   }
 
@@ -59,22 +61,22 @@ class ReposContainer extends Component {
     console.log('PROPS', isLoading, hasErrored);
     let content = null;
 
+    if (this.state.repos && this.state.repos.length) {
+      content = <TopRepos reposData={this.state.repos}/>;
+    } else {
+      content = (<View style={{ alignItems: 'center' }}>
+        <Text style={styles.headline}>Sorry, no results were found!</Text>
+        <Image
+          source={require('../assets/no_results.png')}
+          resizeMode={'contain'}
+        />
+      </View>);
+    }
     if (isLoading) {
       content = <Text style={styles.headline}>Loading…</Text>;
     }
     if (hasErrored) {
       content = <Text style={styles.headline}>Sorry! There was an error loading the repositories info</Text>;
-    }
-    if (this.state.repos && this.state.repos.length) {
-      content = <TopRepos reposData={this.state.repos}/>;
-    } else if (this.state.repos) {
-      content = (<View style={{ alignItems: 'center' }}>
-                  <Text style={styles.headline}>Sorry, no results were found!</Text>
-                  <Image
-                    source={require('../assets/no_results.png')}
-                    resizeMode={'contain'}
-                  />
-                </View>);
     }
     //console.log(repos);
 
@@ -93,6 +95,7 @@ class ReposContainer extends Component {
             value={this.state.searchInput}
             underlineColorAndroid="transparent"
             onChangeText={(searchInput) => this.changeSearchHandler(searchInput.toLowerCase())}
+            editable={!this.state.isLoading}
           />
           <TouchableWithoutFeedback onPress={this.cancelSearchHandler}>
             <Image
