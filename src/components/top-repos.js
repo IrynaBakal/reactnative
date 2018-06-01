@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Image,
   ScrollView,
@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { styles } from '../styles/top-repos';
 
-const TopRepos = ({reposData}) => {
-  console.log(reposData);
+const TopRepos = ({reposData, fetchRepoDetailed}) => {
+  console.log(reposData, fetchRepoDetailed);
 
   showDetailedRepo = () => {
     console.log('clicked');
@@ -51,7 +51,7 @@ const TopRepos = ({reposData}) => {
                   </View>
                 </View>
               </View>
-              <TouchableWithoutFeedback onPress={this.showDetailedRepo}>
+              <TouchableWithoutFeedback onPress={fetchRepoDetailed.bind(this, repo.full_name)}>
                 <Image
                   resizeMode="contain"
                   source={require('../assets/next.png')}

@@ -24,3 +24,8 @@ export function fetchRepos() {
   console.log('ACTION [FETCH_REPOS]');
   return { type: 'FETCHED_REPOS' }
 }
+
+export function fetchRepoDetailed(fullname) {
+  console.log('ACTION [FETCHED_REPO_DETAILED]', fullname);
+  return { type: 'FETCHED_REPO_DETAILED', fullname }
+}

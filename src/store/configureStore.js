@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../reducers';
 import { initialState } from '../reducers/repos';
-import { watchFetchRepos } from '../sagas/sagas';
+import { rootSaga } from '../sagas/sagas';
 import createSagaMiddleware from 'redux-saga'
 
 const sagaMiddleware = createSagaMiddleware(initialState);
@@ -10,6 +10,6 @@ const store = createStore(
     applyMiddleware(sagaMiddleware)
   );
 
-sagaMiddleware.run(watchFetchRepos);
+sagaMiddleware.run(rootSaga);
 
 export default store;

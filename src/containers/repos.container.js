@@ -9,7 +9,7 @@ import {
 import { styles } from '../styles/index';
 import TopRepos from '../components/top-repos';
 import { connect } from 'react-redux';
-import { fetchRepos } from '../actions/repos';
+import { fetchRepos, fetchRepoDetailed } from '../actions/repos';
 
 class ReposContainer extends Component {
   state = { searchInput: '' };
@@ -54,6 +54,11 @@ class ReposContainer extends Component {
     this.props.dispatch(fetchRepos());
   }
 
+  fetchRepoDetailed(name) {
+    console.log('[fetchRepoDetailed] fullname', name);
+    this.props.dispatch(fetchRepoDetailed(name));
+  }
+
   render() {
     console.log('state after constructor in render ', this.state);
 
@@ -62,7 +67,7 @@ class ReposContainer extends Component {
     let content = null;
 
     if (this.state.repos && this.state.repos.length) {
-      content = <TopRepos reposData={this.state.repos}/>;
+      content = <TopRepos reposData={this.state.repos} fetchRepoDetailed={this.fetchRepoDetailed.bind(this)} />;
     } else {
       content = (<View style={{ alignItems: 'center' }}>
         <Text style={styles.headline}>Sorry, no results were found!</Text>
